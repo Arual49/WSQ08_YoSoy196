@@ -1,0 +1,49 @@
+MAX_CHECKS = 30
+
+def convert_num_count (num, count):
+	num_str = str(num)
+	pal = pally (num_str, 0, len(num_str) - 1)
+	
+	if pal:
+		return count	
+	if count > MAX_CHECKS:
+		return count
+	
+	reverse_num = num_str[::-1]
+	convert_sum = num + int(reverse_num)
+	return convert_num_count (convert_sum, count + 1)
+		
+def pally (num_str, x, y):
+	# return num_str == num_str[::-1]
+	if x >= y:
+		return True
+	if num_str[x] != num_str[y]:
+		return False
+	return pally (num_str, x + 1, y - 1)
+	
+def program (lower_b, upper_b):
+	natural_palindromes = 0
+	non_lych = 0
+	lych_num = 0
+	for num in range (lower_b, upper_b + 1):
+		saved_value = convert_num_count(num, 0)
+		if saved_value == 0:
+			natural_palindromes = natural_palindromes + 1
+		elif saved_value > 0 and saved_value <= MAX_CHECKS:
+			non_lych = non_lych + 1
+		else:
+			print("YAY, we found a lychrel candidate",num)
+			lych_num = lych_num + 1
+	return natural_palindromes, non_lych, lych_num
+	
+def user_interaction ():
+	lower_b = int (input ("Lower bound: "))
+	upper_b = int (input ("Upper bound: "))
+	print ("For the numbers in the range of " + str(lower_b) + " and " + str(upper_b))
+	(naturals,nonlych,lych) = program (lower_b, upper_b)
+	
+	print ("Natural palindromes: " + str (naturals))
+	print ("Non-Lycherels: " + str (nonlych))
+	print ("Lycherels: " + str (lych))
+	
+user_interaction ()
